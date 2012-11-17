@@ -35,8 +35,6 @@ void function($){
         closeTime     : 0,   // 关闭延迟时间
         isMax         : false,  // 是否最大化
         isMask        : true,   // 是否遮罩
-        top           : 0,      // top 值
-        left          : 0,      // left 值
         open      : null,   // 打开后执行函数
         close     : null,   // 关闭后执行函数
         isDrag        : true,   // 是否拖动
