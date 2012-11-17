@@ -57,10 +57,10 @@ void function($){
     };
 
     $.mmDialog  = function(opts){
-        $.extend(this, defautls, opts || {})；
-		if( this.top == null && this.left == null){
-		     this.isVerticalCenter = true;
-		}
+        $.extend(this, defautls, opts || {});
+        if( this.top == null && this.left == null){
+            this.isVerticalCenter = true;
+        }
         this.render()
         if($.isFunction( this.open )){
             this.open()
@@ -135,17 +135,17 @@ void function($){
         // 居中
         setAlign: function(){
             var target  = this.el
-			if(this.isVerticalCenter){
-			   target.css({
-                  top:(winHeight -  target.innerHeight()) / 2 ,
-                  left:(winWidth - target.innerWidth()) / 2
-              })
-			}else{
-			   target.css({
-                   top: this.top >> 0,
-                   left: this.left >> 0
-               })
-			}
+            if(this.isVerticalCenter){
+                target.css({
+                    top:(winHeight -  target.innerHeight()) / 2 ,
+                    left:(winWidth - target.innerWidth()) / 2
+                })
+            }else{
+                target.css({
+                    top: this.top | 0,
+                    left: this.left | 0
+                })
+            }
             return this;
         },
         // 设置全局堆叠值，防止z-index穿透
