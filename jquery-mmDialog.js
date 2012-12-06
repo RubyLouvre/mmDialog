@@ -1,8 +1,8 @@
-define("mmDialog",["$event","$attr","$css"], function( $ ){
+void function($){
     var winWidth = $(window).width();
     var winHeight = $(window).height();
 
-    $.bind(window,"resize", function(){
+    $(window).bind("resize", function(){
         setTimeout(function(){
             winWidth = $(window).width();
             winHeight = $(window).height();
@@ -10,7 +10,20 @@ define("mmDialog",["$event","$attr","$css"], function( $ ){
     })
     // 全局堆叠值,不能超过最大值(2147483647) From: http://softwareas.com/whats-the-maximum-z-index
     var Z  = (new Date().getTime() + "").slice(0,6) >> 0
-
+    var W3C = window.dispatchEvent
+    //为性能起见,不使用jQuery高度封装的事件系统
+    var addEvent =  W3C ? function( el, type, fn, phase ){
+        el.addEventListener( type, fn, !!phase );
+    } : function( el, type, fn ){
+        el.attachEvent && el.attachEvent( "on"+type, fn );
+    }
+    var removeEvent =  W3C ? function( el, type, fn, phase ){
+        el.removeEventListener( type, fn || $.noop, !!phase );
+    } : function( el, type, fn ){
+        if ( el.detachEvent ) {
+            el.detachEvent( "on" + type, fn || $.noop );
+        }
+    }
     var defautls = {
         skin          : 'default', // 主题样式
         title         : '标题', // 标题
@@ -42,7 +55,7 @@ define("mmDialog",["$event","$attr","$css"], function( $ ){
     };
 
     $.mmDialog  = function(opts){
-        $.mix(this, defautls, opts || {});
+        $.extend(this, defautls, opts || {});
         if( this.top == null && this.left == null){
             this.isVerticalCenter = true;
         }
@@ -60,29 +73,27 @@ define("mmDialog",["$event","$attr","$css"], function( $ ){
                 width: this.isFull ? winWidth : this.width,
                 height: this.isFull ? winHeight: this.height
             }).appendTo("body").html(this.tmpl)
-
+           
             //处理标题
             var head = this.head = target.find("h1");
             var body = this.body = target.find("div").first()
-            var foot = this.foot = target.find("div").last()
+            this.foot = target.find("div").last()
             if(this.title == false){
                 head.hide()
             }
-              $.log("xxxxxxxxx")
             if(typeof this.title == "string"){
                 head.html(this.title);
                 var self = this;
-                $('<a class="ui-close" href="javascript:void(0)" title="关闭" >关闭</a>').appendTo(head).click( function(){
+                $('<a class="ui-close" href="javascript:void(0)" title="关闭" >关闭</a> ').appendTo(head).click( function(){
                     self.teardown()
-               } )
+                } )
             }
-       
             //处理内容
             body.html(this.content).height(245);
             if(this.isFull){
                 var h = winHeight -
-                head.outerHeight() -
-                foot.outerHeight() -
+                this.head.outerHeight() -
+                this.foot.outerHeight() -
                 parseInt( body.css("marginTop"),10) -
                 parseInt( body.css("marginTop"),10) -
                 parseInt( body.css("marginBottom"),10) -
@@ -99,7 +110,7 @@ define("mmDialog",["$event","$attr","$css"], function( $ ){
             if(!"1"[0]){
                 target.css("position",'absolute')
             }
-
+      
             if(this.skin){
                 target.addClass(this.skin)
             }
@@ -179,8 +190,8 @@ define("mmDialog",["$event","$attr","$css"], function( $ ){
                     startX               = e.clientX - parseInt(box.style.left);
                     startY               = e.clientY - parseInt(box.style.top);
                     handler.setCapture && handler.setCapture(); // IE 下防止拖动过快丢失对象
-                    $.bind(document, 'mousemove', drag.move);
-                    $.bind(document, 'mouseup', drag.up);
+                    addEvent(document, 'mousemove', drag.move);
+                    addEvent(document, 'mouseup', drag.up);
                     return false; // 防止在 chrome 下滚屏，并丢失 cursor:move 样式
                 },
                 move: function(e){
@@ -194,14 +205,12 @@ define("mmDialog",["$event","$attr","$css"], function( $ ){
                 },
                 up: function(){
                     handler.style.cursor = 'auto';
-                    $.unbind(document, 'mousemove', drag.move);
-                    $.unbind(document, 'mouseup', drag.up);
+                    removeEvent(document, 'mousemove', drag.move);
+                    removeEvent(document, 'mouseup', drag.up);
                     handler.releaseCapture && handler.releaseCapture(); // 防止拖动过快丢失对象
                 }
             };
-            $.bind(handler, 'mousedown', drag.down);
+            addEvent(handler, 'mousedown', drag.down);
         }
     }
-    return $;
-})
-
+}(jQuery)

@@ -13,7 +13,11 @@ form,ul,li,p,h1,h2,h3,h4,h5,h6{margin:0;padding:0;}
 img{border:0;}ul,li{list-style-type:none;}
 .tc{text-align:center;}.tl{text-align:left;}.tr{text-align:right;}.db{display:block;}.dn{display:none;}
 .fl{float:left;}.fr{float:right;}.clear{clear:both;}em{font-style:normal;}.cp{cursor:pointer;}.fz12{font-size:12px;}.fwn{font-weight:normal;}
-select,input,button,textarea{font:12px/20px Verdana,Simsun,Helvetica,Arial,sans-serif;}.ofh{overflow:hidden;}
+select,input,button,textarea{font:12px/20px Verdana,Simsun,Helvetica,Arial,sans-serif;}
+input{
+    padding: 4px 5px;
+}
+.ofh{overflow:hidden;}
 input,select,img{vertical-align:middle;}
 textarea{font-size:12px;overflow:auto;}
 a{color:#08c;text-decoration:none;}

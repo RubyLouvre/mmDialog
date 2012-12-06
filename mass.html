@@ -1,0 +1,133 @@
+<!doctype html>
+<html>
+    <head>
+        <title>mass版 by 司徒正美 </title>
+　　    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <script src="mass_merge.js"></script>
+
+        <link rel="stylesheet" type="text/css" href="css/ui.default.css">
+　　    <script>
+
+            require("mmDialog,ready", function( $ ){
+                $("#default").click(function(){
+                    new $.mmDialog({
+                        title  : '默认风格',
+                        content: '新弹出小窗口的测试内容',
+                        width  : 200,
+                        height : 200
+                    });
+     
+                })
+                $("#aero").click(function(){
+                    new $.mmDialog({
+                        skin: "aero", // WIN7风格
+                        title  : 'WIN7风格',
+                        content: $("#content").html(),
+                        width  : 400,
+                        height : 250,
+                        open : function(){
+                            alert("可以在这里做些个性化设置")
+                        },
+                        close: function(){
+                            alert("可以在这里进行数据打点")
+                        }
+                    });
+                })
+                $("#mac").click(function(){
+                    new $.mmDialog({
+                        skin: "mac", // WIN7风格
+                        title  : 'MAC风格',
+                        content: "",
+                        width  : 400,
+                        height : 250,
+                        open : function(){
+                            var self = this
+                            $("<input value='关闭我' type='button'>").appendTo(self.body).click(function(){
+                                self.teardown()
+                            })
+                        },
+                        close: function(){
+                            alert("你可以在窗口添加关闭按钮,调用teardown实例方法将它销毁")
+                        }
+                    });
+                });
+                $("#blue").click(function(){
+                    new $.mmDialog({
+                        skin: "blue", // WIN7风格
+                        title  : 'blue风格',
+                        content: "",
+                        width  : 400,
+                        height : 250,
+                        open : function(){
+                            var self = this
+                            $("<input value='弹出窗口窗' type='button'>").appendTo(self.body).click(function(){
+                                new $.mmDialog({
+                                    title  : '我是新弹出的小窗口',
+                                    content: '新弹出小窗口的测试内容',
+                                    width  : 200,
+                                    height : 200
+                                });
+                            })
+                        },
+                        close: function(){
+                            alert("你可以在窗口添加关闭按钮,调用teardown实例方法将它销毁")
+                        }
+                    });
+                })
+                $("#notitle").click(function(){
+                    new $.mmDialog({
+                        title    : false, // 没有标题栏
+                        content  : '没有标题,可以加工成面板,tooltips什么的<br /><input type="button" value="通过外部方法关闭" />',
+                        open : function(){
+                            var self = this
+                            this.body.find("input").click(function(){
+                                self.close();
+                            });
+                        }
+                    });
+                })
+                $("#green").click(function(){
+                    new $.mmDialog({
+                        skin: "green", // green风格
+                        title    : "不能拖动", // 没有标题栏
+                        content  : '使用isDrag属性禁止拖动'
+                    });
+
+                })
+                $("#orange").click(function(){
+                    new $.mmDialog({
+                        skin     : "orange", // green风格
+                        isMask   : false,
+                        isFull   :true,
+                        title    : "没有遮罩层", // 没有标题栏
+                        content  : '使用isMask属性禁用遮罩层,使用isFull开启全屏',
+                        open: function(){
+                            this.el.css("border","1px solid red")
+                        }
+                    });
+                })
+            })
+
+        </script>
+        <style type="text/css">
+            html,body{ height:100%;}
+
+        </style>
+　　  </head>
+　　  <body>
+        <input type="button" id="default" value="默认风格"/>
+        <input type="button" id="aero" value="window7风格"/>
+        <input type="button" id="mac" value="MAC风格"/>
+        <input type="button" id="blue" value="blue风格"/>
+        <input type="button" id="green" value="green风格"/>
+        <input type="button" id="orange" value="orange风格"/>
+        <div style="display:none" id="content">
+            可能需要做仅一次登录（别人登录过，你不能登录或强制T前一个人的登录），也有可能在想在不能使用Session的地方，比如缓存自定权限认证需要使用Session。
+
+            首先，第一思维，不应该是自定义Session，不管是从拓展性等各个角度来说，这种做法是极其不好的，除非有非常成熟的体系模型。
+
+            所以想到的应该是，无缝集成。 比如做这个系统的时候，可能只是一个小站点，如果移植到集群里面，很容易实现横向拓展。
+        </div>
+　　  </body>
+
+</html>
